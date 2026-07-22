@@ -241,7 +241,7 @@ export const MovieDetails: React.FC = () => {
         <section className="md-similar-section">
           <MovieRow 
             title={mediaType === 'tv' ? 'Similar Series' : 'Similar Movies'} 
-            fetchUrl={API_CONFIG.endpoints.similar(mediaType, id)} 
+            fetchUrl={API_CONFIG.endpoints.recommendations(mediaType, id)} 
           />
         </section>
       )}

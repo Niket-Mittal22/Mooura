@@ -50,5 +50,6 @@ export const API_CONFIG = {
     credits: (type: string, id: number | string) => `${BASE_URL}/${type}/${id}/credits?api_key=${API_KEY}`,
     videos: (type: string, id: number | string) => `${BASE_URL}/${type}/${id}/videos?api_key=${API_KEY}`,
     similar: (type: string, id: number | string) => `${BASE_URL}/${type}/${id}/similar?api_key=${API_KEY}`,
+    recommendations: (type: string, id: number | string) => `${BASE_URL}/${type}/${id}/recommendations?api_key=${API_KEY}`,
   },
 };
