@@ -1,0 +1,18 @@
+/* App.css */
+
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Minimum height is exactly the height of the screen */
+}
+
+.main-content {
+  flex-grow: 1; /* This is the magic line. It stretches to push the footer down. */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Optional: Ensure the Home component doesn't get messed up if it has its own min-height */
+.home-container {
+  flex-grow: 1;
+}

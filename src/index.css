@@ -1,0 +1,39 @@
+/* src/index.css */
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "@fontsource-variable/geist";
+
+@theme inline {
+    --font-sans: 'Geist Variable', sans-serif;
+    --color-background: #0F0F12;
+    --color-surface: #1A1A22;
+    --color-accent-primary: #E50914;
+    --color-accent-secondary: #00F2FE;
+    --color-text-primary: #FFFFFF;
+    --color-text-muted: #A0A0AB;
+}
+
+:root {
+    --background: #0F0F12;
+    --foreground: #FFFFFF;
+    --card: #1A1A22;
+    --card-foreground: #FFFFFF;
+    --primary: #E50914;
+    --primary-foreground: #FFFFFF;
+    --muted: #A0A0AB;
+    --border: rgba(255, 255, 255, 0.08);
+}
+
+body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+* {
+    border-color: var(--border);
+}

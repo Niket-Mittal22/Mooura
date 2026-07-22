@@ -1,0 +1,358 @@
+.movie-details-page {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #050508;
+  color: #ffffff;
+}
+
+.md-loading-screen {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #050508;
+}
+
+/* HERO SECTION */
+.md-hero {
+  position: relative;
+  width: 100%;
+  height: 70vh; /* Shorter than home hero so content peeks up */
+  min-height: 500px;
+  display: flex;
+  align-items: flex-end; /* Push content to the bottom gradient area */
+}
+
+.md-hero-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.md-hero-backdrop img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  opacity: 0.6; /* Dim slightly for better text contrast */
+}
+
+.md-hero-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    0deg, 
+    #050508 0%, 
+    rgba(5, 5, 8, 0.9) 15%, 
+    rgba(5, 5, 8, 0.4) 50%, 
+    transparent 100%
+  );
+}
+
+.md-hero-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 4rem 2rem 4rem;
+  animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.md-title {
+  font-size: clamp(2.5rem, 4vw, 4rem);
+  font-weight: 800;
+  margin: 0 0 1rem 0;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.md-meta-actions-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.md-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.md-rating {
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.md-dot {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.md-genres {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.md-watchlist-btn {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 99px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.25s ease;
+}
+
+.md-watchlist-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+/* BODY SECTION */
+.md-body {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 2rem 4rem 4rem 4rem;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr; /* Left is wider than right */
+  gap: 4rem;
+  position: relative;
+  z-index: 10;
+}
+
+.md-section {
+  margin-bottom: 3rem;
+}
+
+.md-section h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.md-overview-text {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+
+/* CAST GRID */
+.md-cast-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 1.5rem;
+}
+
+.md-cast-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.md-cast-img-wrap {
+  width: 100%;
+  aspect-ratio: 1/1; /* Square for a modern circular/rounded look */
+  border-radius: 50%;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.md-cast-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.md-cast-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.md-cast-info {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.md-cast-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.md-cast-role {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.45);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* CREW GRID */
+.md-crew-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.md-crew-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.md-crew-name {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.md-crew-job {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* TRAILER EMBED */
+.md-trailer-section {
+  position: sticky;
+  top: 100px; /* Floats perfectly below the navbar as you scroll */
+}
+
+.md-trailer-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #000;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.md-trailer-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* NO TRAILER FALLBACK CARD */
+.md-no-trailer-card {
+  width: 100%;
+  aspect-ratio: 16/9; /* Perfectly matches the space the video would take */
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.md-no-trailer-card svg {
+  opacity: 0.5;
+}
+
+.md-no-trailer-card p {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+/* =========================================
+   RESPONSIVE LAYOUT
+   ========================================= */
+@media (max-width: 1024px) {
+  .md-body {
+    grid-template-columns: 1fr; /* Stack columns vertically */
+    gap: 2rem;
+  }
+  
+  .md-trailer-section {
+    position: static; /* Remove sticky on tablet/mobile */
+  }
+}
+
+@media (max-width: 768px) {
+  .md-hero {
+    height: 60vh;
+  }
+  
+  .md-hero-content {
+    padding: 0 1.5rem 1.5rem 1.5rem;
+  }
+
+  .md-body {
+    padding: 1.5rem;
+  }
+
+  .md-meta-actions-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .md-watchlist-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .md-cast-grid {
+    grid-template-columns: repeat(4, 1fr); /* 4 across on mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .md-cast-grid {
+    grid-template-columns: repeat(3, 1fr); /* 3 across on tiny screens */
+  }
+}
+/* SIMILAR MOVIES SECTION */
+.md-similar-section {
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  position: relative;
+  z-index: 10;
+}
+
+/* Ensure padding adjusts smoothly on mobile just like the Hero/Body */
+@media (max-width: 768px) {
+  .md-similar-section {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+}

@@ -1,0 +1,18 @@
+.home-container {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #050508;
+}
+
+.home-content-rows {
+  position: relative;
+  z-index: 10;
+  margin-top: -6rem; /* Pulls rows up into the Hero's fade out */
+  padding-bottom: 4rem;
+}
+
+@media (max-width: 768px) {
+  .home-content-rows {
+    margin-top: -2rem; /* Less overlap needed on mobile */
+  }
+}

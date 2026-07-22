@@ -1,0 +1,247 @@
+.wide-movie-card {
+  display: flex;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.3s ease, 
+              background 0.3s ease, 
+              box-shadow 0.3s ease;
+  height: 100%;
+}
+
+.wide-movie-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* POSTER SECTION */
+.wide-card-poster {
+  position: relative;
+  width: 200px;
+  flex-shrink: 0;
+  background: #0f0f13;
+}
+
+.wide-card-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wide-card-no-image {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.9rem;
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.wide-media-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* CONTENT SECTION */
+.wide-card-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+.wide-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.wide-card-title {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #ffffff;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.2;
+}
+
+.wide-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.wide-rating {
+  color: #fbbf24;
+  font-weight: 600;
+}
+
+.meta-dot {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.wide-card-overview {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.65);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* FOOTER & BUTTONS */
+.wide-card-footer {
+  margin-top: auto;
+  padding-top: 1rem;
+  display: flex;
+  gap: 0.75rem;
+}
+
+.wide-card-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Primary Button (Trailer) */
+.wide-card-btn.primary {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.wide-card-btn.primary:hover {
+  background: #ffffff;
+  color: #0b0b0e;
+}
+
+/* Secondary Button (More Info) */
+.wide-card-btn.secondary {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  border: 1px solid transparent;
+}
+
+.wide-card-btn.secondary:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* =========================================
+   RESPONSIVE LAYOUT (Mobile Vertical Stack)
+   ========================================= */
+
+/* =========================================
+   RESPONSIVE LAYOUT (Tablet / Small Desktop)
+   ========================================= */
+@media (max-width: 1024px) {
+  /* Shrink the poster so the text side gets more width */
+  .wide-card-poster {
+    width: 150px; 
+  }
+
+  /* Tighten the padding and spacing */
+  .wide-card-content {
+    padding: 1.25rem;
+    gap: 0.75rem;
+  }
+
+  /* Scale down the typography so it fits the narrower space */
+  .wide-card-title {
+    font-size: 1.15rem;
+  }
+
+  /* Restrict the overview to 2 lines to ensure buttons stay visible */
+  .wide-card-overview {
+    font-size: 0.85rem;
+    -webkit-line-clamp: 2;
+  }
+
+  .wide-card-btn {
+    padding: 0.45rem 0.85rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .wide-movie-card {
+    flex-direction: column;
+  }
+
+  /* Center the poster and shrink it so it doesn't take up the whole screen height */
+  .wide-card-poster {
+    width: 160px; /* Restrict width */
+    aspect-ratio: 2/3; 
+    margin: 1.5rem auto 0 auto; /* Auto sides perfectly center it */
+    border-radius: 10px; /* Slight rounding on mobile looks more premium */
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); /* Floating shadow effect */
+  }
+
+  .wide-media-badge {
+    top: 8px;
+    left: 8px;
+    font-size: 0.6rem;
+  }
+
+  .wide-card-content {
+    padding: 1.25rem;
+    gap: 0.85rem;
+  }
+
+  .wide-card-title {
+    font-size: 1.15rem;
+  }
+
+  .wide-card-overview {
+    font-size: 0.9rem;
+    -webkit-line-clamp: 4; 
+  }
+
+  /* Make buttons stretch full width on mobile for easy tapping */
+  .wide-card-footer {
+    flex-direction: column;
+  }
+  
+  .wide-card-btn {
+    width: 100%;
+    padding: 0.75rem;
+  }
+}

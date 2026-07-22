@@ -1,0 +1,270 @@
+/* Hero Container - Full screen minus navbar */
+.hero-container {
+  position: relative;
+  width: 100%;
+  height: 90vh;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background-color: #050508;
+}
+
+.hero-skeleton {
+  width: 100%;
+  height: 90vh;
+  background: #0a0a0f;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+/* MEDIA LAYER (Image & Video) */
+.hero-media-wrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* The YouTube Video */
+.hero-video-embed {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 100vh;
+  /* Massive scale to crop out any YouTube edge UI */
+  transform: translate(-50%, -50%) scale(1.4); 
+  pointer-events: none !important; 
+  user-select: none;
+  z-index: 1; /* Sits below the image */
+}
+
+/* The Image Cover */
+.hero-backdrop-cover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  z-index: 2; /* Sits ABOVE the video to hide loading/buffering */
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-backdrop-cover.hidden {
+  opacity: 0;
+}
+
+.hero-backdrop-cover.visible {
+  opacity: 1;
+}
+
+/* COMPLEX GRADIENT OVERLAY */
+/* Deep dark on the left, fading out, with a bottom fade to blend into the next section */
+.hero-gradient-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(90deg, #050508 0%, rgba(5, 5, 8, 0.8) 30%, transparent 60%),
+              linear-gradient(0deg, #050508 0%, transparent 20%);
+}
+
+/* CONTENT LAYER */
+.hero-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.25rem;
+  /* Push content slightly down to account for fixed navbar */
+  transform: translateY(2rem); 
+}
+
+.hero-title {
+  font-size: clamp(3rem, 5vw, 4.5rem); /* Responsive typography */
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  max-width: 60%;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  animation: slideUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+  animation: slideUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+  opacity: 0;
+}
+
+.hero-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: #ffffff;
+}
+
+.star {
+  color: #fbbf24;
+  font-size: 1.1rem;
+}
+
+.hero-meta-dot {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.hero-overview {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.65);
+  max-width: 45%;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 4; /* Truncate after 4 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  animation: slideUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+  opacity: 0;
+}
+
+/* BUTTONS */
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  animation: slideUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+  opacity: 0;
+}
+
+.hero-btn-primary {
+  background: #ffffff;
+  color: #050508;
+  border: none;
+  padding: 0.85rem 1.75rem;
+  border-radius: 99px;
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+.hero-btn-primary:hover {
+  background: #e4e4e7;
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+}
+
+.hero-btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.85rem 1.75rem;
+  border-radius: 99px;
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.hero-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: scale(1.05);
+}
+
+/* ANIMATIONS */
+@keyframes mediaFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0.6; }
+}
+
+/* =========================================
+   RESPONSIVE LAYOUT FOR HERO
+   ========================================= */
+
+@media (max-width: 1024px) {
+  .hero-title { max-width: 80%; }
+  .hero-overview { max-width: 65%; }
+}
+
+@media (max-width: 768px) {
+  .hero-container {
+    height: 85dvh;
+    align-items: flex-end; /* Push content to bottom on mobile */
+    padding-bottom: 3rem;
+  }
+
+  /* Change gradient to protect text at the bottom of the screen */
+  .hero-gradient-overlay {
+    background: linear-gradient(0deg, #050508 0%, rgba(5, 5, 8, 0.9) 25%, transparent 70%),
+                linear-gradient(90deg, rgba(5, 5, 8, 0.5) 0%, transparent 100%);
+  }
+
+  .hero-content {
+    padding: 0 1.5rem;
+    transform: translateY(0);
+  }
+
+  .hero-title {
+    max-width: 100%;
+    font-size: clamp(2.2rem, 8vw, 3rem);
+  }
+
+  .hero-overview {
+    max-width: 100%;
+    font-size: 0.95rem;
+    -webkit-line-clamp: 3;
+  }
+
+  .hero-actions {
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .hero-btn-primary, 
+  .hero-btn-secondary {
+    flex: 1; /* Make buttons share equal width */
+    justify-content: center;
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+  }
+}

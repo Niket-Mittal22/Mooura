@@ -1,0 +1,148 @@
+.movie-row-container {
+  margin-bottom: 3.5rem;
+  position: relative;
+  z-index: 10; /* Ensures rows sit cleanly over the hero gradient */
+}
+
+.movie-row-title {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 1rem 3rem;
+  letter-spacing: -0.01em;
+}
+
+.movie-row-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* The horizontal scrolling container */
+.movie-row-slider {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* Removed horizontal padding so the track goes edge-to-edge */
+  padding: 1rem 0 1rem 0; 
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  
+  /* Hide scrollbar for standard browsers */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.movie-row-slider::-webkit-scrollbar {
+  display: none;
+}
+
+/* Individual Card Wrapper */
+.row-item-wrapper {
+  flex: 0 0 auto;
+  width: 180px; 
+  scroll-snap-align: start;
+}
+
+/* Push only the first and last items inward to align with the title */
+.row-item-wrapper:first-child {
+  margin-left: 4rem;
+}
+
+.row-item-wrapper:last-child {
+  margin-right: 4rem;
+}
+
+/* Glassmorphic Scroll Buttons */
+.row-scroll-btn {
+  position: absolute;
+  top: 0;
+  bottom: 1rem; /* Accounts for slider bottom padding */
+  width: 50px;
+  background: rgba(5, 5, 8, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: none;
+  color: #ffffff;
+  z-index: 5;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease, background 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.movie-row-wrapper:hover .row-scroll-btn {
+  opacity: 1;
+}
+
+.row-scroll-btn:hover {
+  background: rgba(5, 5, 8, 0.8);
+}
+
+.row-scroll-btn.left {
+  left: 0;
+  background: linear-gradient(90deg, rgba(5,5,8,1) 0%, rgba(5,5,8,0.5) 50%, transparent 100%);
+}
+
+.row-scroll-btn.right {
+  right: 0;
+  background: linear-gradient(-90deg, rgba(5,5,8,1) 0%, rgba(5,5,8,0.5) 50%, transparent 100%);
+}
+
+/* Skeleton Loading State */
+.skeleton-text {
+  width: 200px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  color: transparent !important;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+.skeleton-card {
+  height: 270px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 14px;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+/* =========================================
+   RESPONSIVE LAYOUT
+   ========================================= */
+@media (max-width: 768px) {
+  .movie-row-title {
+    margin-left: 1.5rem;
+    font-size: 1.15rem;
+  }
+
+  .movie-row-slider {
+    padding: 0 0 1rem 0;
+    gap: 0.85rem;
+  }
+
+  .row-item-wrapper {
+    width: 130px; 
+  }
+  
+  /* Adjust the first and last card margins for mobile */
+  .row-item-wrapper:first-child {
+    margin-left: 1.5rem;
+  }
+
+  .row-item-wrapper:last-child {
+    margin-right: 1.5rem;
+  }
+
+  .row-scroll-btn {
+    display: none;
+  }
+}
