@@ -14,7 +14,7 @@
 
 .modern-navbar {
   pointer-events: auto;
-  position: relative; /* Required for absolute mobile menu positioning */
+  position: relative;
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
@@ -164,7 +164,11 @@
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
 }
 
-/* Profile Picture */
+/* Profile Area & Dropdown */
+.nav-profile-wrapper {
+  position: relative;
+}
+
 .nav-profile-btn {
   background: transparent;
   border: 2px solid rgba(255, 255, 255, 0.2);
@@ -192,7 +196,93 @@
   object-fit: cover;
 }
 
-/* Mobile Menu Button (Hidden on Desktop) */
+.profile-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 220px;
+  background: rgba(18, 18, 24, 0.95);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 0.75rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  animation: dropdownFadeIn 0.2s ease-out forwards;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.profile-dropdown-header {
+  padding: 0.5rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.user-email {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 0.25rem 0;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  text-align: left;
+}
+
+.dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.dropdown-item.logout-btn {
+  color: #f87171;
+}
+
+.dropdown-item.logout-btn:hover {
+  background: rgba(248, 113, 113, 0.1);
+  color: #f87171;
+}
+
+/* Mobile Menu Button */
 .mobile-menu-btn {
   display: none;
   background: transparent;
@@ -209,6 +299,21 @@
   opacity: 0.7;
 }
 
+/* Navbar Auth Skeleton Loader */
+.nav-auth-skeleton {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  animation: navSkeletonPulse 1.2s infinite ease-in-out;
+}
+
+@keyframes navSkeletonPulse {
+  0% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0.4; }
+}
 
 /* =========================================
    RESPONSIVE LAYOUT
@@ -218,7 +323,6 @@
     padding: 1rem;
   }
   
-  /* Change grid to flex on mobile to push left and right sections apart */
   .modern-navbar {
     display: flex;
     justify-content: space-between;
@@ -229,7 +333,6 @@
     display: flex;
   }
 
-  /* Shrink search to icon only */
   .search-shortcut {
     display: none;
   }
@@ -255,7 +358,6 @@
     padding: 1rem;
     box-shadow: 0 24px 48px rgba(0, 0, 0, 0.6);
     
-    /* Animation defaults */
     opacity: 0;
     visibility: hidden;
     transform: translateY(-15px) scale(0.98);
@@ -269,7 +371,6 @@
     transform: translateY(0) scale(1);
   }
 
-  /* Stack links vertically */
   .nav-links {
     flex-direction: column;
     gap: 0.5rem;
@@ -284,7 +385,6 @@
   }
 }
 
-/* Extra small screens */
 @media (max-width: 480px) {
   .nav-signin-btn {
     padding: 0.5rem 1rem;

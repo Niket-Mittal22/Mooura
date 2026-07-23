@@ -1,18 +1,19 @@
-/* Hero Container - Full screen minus navbar */
+/* Hero Container - Full screen minus navbar space */
 .hero-container {
   position: relative;
   width: 100%;
-  height: 90vh;
-  min-height: 600px;
+  height: 85vh;
+  min-height: 550px;
   display: flex;
-  align-items: center;
+  align-items: flex-end; /* Anchor content nicely near the bottom */
+  padding-bottom: 3.5rem;
   overflow: hidden;
   background-color: #050508;
 }
 
 .hero-skeleton {
   width: 100%;
-  height: 90vh;
+  height: 85vh;
   background: #0a0a0f;
   animation: pulse 2s infinite ease-in-out;
 }
@@ -27,29 +28,31 @@
   overflow: hidden;
 }
 
-/* The YouTube Video */
+/* The YouTube Video - 16:9 Cover Aspect Ratio Calculation */
 .hero-video-embed {
   position: absolute;
   top: 50%;
   left: 50%;
   width: 100vw;
-  height: 100vh;
-  /* Massive scale to crop out any YouTube edge UI */
-  transform: translate(-50%, -50%) scale(1.4); 
+  height: 56.25vw; /* 16:9 Ratio relative to Viewport Width */
+  min-height: 100vh;
+  min-width: 177.78vh; /* 16:9 Ratio relative to Viewport Height */
+  /* Scale slightly to hide any video border/watermark edges cleanly */
+  transform: translate(-50%, -50%) scale(1.15);
   pointer-events: none !important; 
   user-select: none;
-  z-index: 1; /* Sits below the image */
+  z-index: 1; /* Sits below image cover */
 }
 
-/* The Image Cover */
+/* The Image Cover (Backdrop Poster) */
 .hero-backdrop-cover {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: top center;
-  z-index: 2; /* Sits ABOVE the video to hide loading/buffering */
+  object-position: center 20%; /* Keep faces and key focal points visible */
+  z-index: 2; /* Sits ABOVE video to hide buffering */
   transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -62,13 +65,13 @@
 }
 
 /* COMPLEX GRADIENT OVERLAY */
-/* Deep dark on the left, fading out, with a bottom fade to blend into the next section */
+/* Dark gradient on the left/bottom to guarantee text contrast */
 .hero-gradient-overlay {
   position: absolute;
   inset: 0;
-  z-index: 1;
-  background: linear-gradient(90deg, #050508 0%, rgba(5, 5, 8, 0.8) 30%, transparent 60%),
-              linear-gradient(0deg, #050508 0%, transparent 20%);
+  z-index: 3;
+  background: linear-gradient(0deg, #050508 0%, rgba(5, 5, 8, 0.7) 25%, transparent 60%),
+              linear-gradient(90deg, #050508 0%, rgba(5, 5, 8, 0.85) 35%, transparent 70%);
 }
 
 /* CONTENT LAYER */
@@ -81,14 +84,12 @@
   padding: 0 4rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 1.25rem;
-  /* Push content slightly down to account for fixed navbar */
-  transform: translateY(2rem); 
+  justify-content: flex-end;
+  gap: 1rem;
 }
 
 .hero-title {
-  font-size: clamp(3rem, 5vw, 4.5rem); /* Responsive typography */
+  font-size: clamp(2.5rem, 5vw, 4.25rem); /* Dynamic responsive typography */
   font-weight: 800;
   color: #ffffff;
   margin: 0;
@@ -127,13 +128,13 @@
 }
 
 .hero-overview {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.65);
-  max-width: 45%;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 48%;
   margin: 0;
   display: -webkit-box;
-  -webkit-line-clamp: 4; /* Truncate after 4 lines */
+  -webkit-line-clamp: 3; /* Truncate after 3 lines to save vertical space */
   -webkit-box-orient: vertical;
   overflow: hidden;
   animation: slideUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
@@ -145,7 +146,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   animation: slideUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
   opacity: 0;
 }
@@ -154,9 +155,9 @@
   background: #ffffff;
   color: #050508;
   border: none;
-  padding: 0.85rem 1.75rem;
+  padding: 0.8rem 1.75rem;
   border-radius: 99px;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -167,7 +168,7 @@
 
 .hero-btn-primary:hover {
   background: #e4e4e7;
-  transform: scale(1.05);
+  transform: scale(1.04);
   box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
 }
 
@@ -177,9 +178,9 @@
   -webkit-backdrop-filter: blur(12px);
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 0.85rem 1.75rem;
+  padding: 0.8rem 1.75rem;
   border-radius: 99px;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -191,7 +192,7 @@
 .hero-btn-secondary:hover {
   background: rgba(255, 255, 255, 0.2);
   border-color: rgba(255, 255, 255, 0.4);
-  transform: scale(1.05);
+  transform: scale(1.04);
 }
 
 /* ANIMATIONS */
@@ -222,49 +223,73 @@
    ========================================= */
 
 @media (max-width: 1024px) {
-  .hero-title { max-width: 80%; }
-  .hero-overview { max-width: 65%; }
+  .hero-container {
+    height: 75vh;
+    min-height: 500px;
+    padding-bottom: 2.5rem;
+  }
+
+  .hero-content {
+    padding: 0 2.5rem;
+  }
+
+  .hero-title { 
+    max-width: 80%; 
+  }
+
+  .hero-overview { 
+    max-width: 70%; 
+    font-size: 0.95rem;
+    -webkit-line-clamp: 3;
+  }
 }
 
 @media (max-width: 768px) {
   .hero-container {
-    height: 85dvh;
-    align-items: flex-end; /* Push content to bottom on mobile */
-    padding-bottom: 3rem;
+    height: 70vh;
+    min-height: 460px;
+    padding-bottom: 2rem;
   }
 
-  /* Change gradient to protect text at the bottom of the screen */
+  /* Bottom dark gradient protection for portrait screens */
   .hero-gradient-overlay {
-    background: linear-gradient(0deg, #050508 0%, rgba(5, 5, 8, 0.9) 25%, transparent 70%),
-                linear-gradient(90deg, rgba(5, 5, 8, 0.5) 0%, transparent 100%);
+    background: linear-gradient(0deg, #050508 0%, rgba(5, 5, 8, 0.95) 30%, transparent 80%),
+                linear-gradient(90deg, rgba(5, 5, 8, 0.6) 0%, transparent 100%);
   }
 
   .hero-content {
     padding: 0 1.5rem;
-    transform: translateY(0);
+    gap: 0.85rem;
   }
 
   .hero-title {
     max-width: 100%;
-    font-size: clamp(2.2rem, 8vw, 3rem);
+    font-size: clamp(2rem, 7vw, 2.75rem);
+  }
+
+  .hero-meta {
+    font-size: 0.95rem;
   }
 
   .hero-overview {
     max-width: 100%;
-    font-size: 0.95rem;
-    -webkit-line-clamp: 3;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    -webkit-line-clamp: 2; /* Limit to 2 lines on phones so buttons stay elevated */
   }
 
   .hero-actions {
     flex-direction: row;
     width: 100%;
+    gap: 0.75rem;
+    margin-top: 0.25rem;
   }
 
   .hero-btn-primary, 
   .hero-btn-secondary {
-    flex: 1; /* Make buttons share equal width */
+    flex: 1; /* Share row width evenly on mobile */
     justify-content: center;
-    padding: 0.8rem 1rem;
-    font-size: 0.9rem;
+    padding: 0.75rem 0.75rem;
+    font-size: 0.88rem;
   }
 }

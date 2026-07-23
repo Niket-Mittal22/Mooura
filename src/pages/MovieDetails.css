@@ -103,7 +103,10 @@
   color: rgba(255, 255, 255, 0.6);
 }
 
+/* WATCHLIST BUTTON & LAYOUT LOCKING */
 .md-watchlist-btn {
+  position: relative; /* Required to anchor the absolute spinner */
+  overflow: hidden;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -116,14 +119,52 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  min-width: 220px; /* Locked width so text changes never cause size shifts */
   transition: all 0.25s ease;
 }
 
-.md-watchlist-btn:hover {
+.md-watchlist-btn:hover:not(:disabled) {
   background: rgba(255, 255, 255, 0.2);
   border-color: rgba(255, 255, 255, 0.4);
   transform: translateY(-2px);
+}
+
+.md-watchlist-btn.added {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Content Wrapper inside Watchlist Button */
+.md-watchlist-btn .btn-content-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  transition: opacity 0.2s ease;
+}
+
+/* Fade out text while loading/checking, without collapsing width/height */
+.md-watchlist-btn.loading .btn-content-wrap {
+  opacity: 0;
+}
+
+/* Centered Button Spinner */
+.md-watchlist-btn .btn-spinner {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: btnSpin 0.8s linear infinite;
+}
+
+@keyframes btnSpin {
+  to { transform: rotate(360deg); }
 }
 
 /* BODY SECTION */
@@ -218,6 +259,8 @@
 }
 
 .md-cast-role {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.45);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -299,6 +342,17 @@
   letter-spacing: 0.01em;
 }
 
+/* SIMILAR MOVIES SECTION */
+.md-similar-section {
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  position: relative;
+  z-index: 10;
+}
+
 /* =========================================
    RESPONSIVE LAYOUT
    ========================================= */
@@ -326,6 +380,11 @@
     padding: 1.5rem;
   }
 
+  .md-similar-section {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
   /* Shrink overview text slightly for better reading on phones */
   .md-overview-text {
     font-size: 1rem;
@@ -340,6 +399,7 @@
   
   .md-watchlist-btn {
     width: 100%;
+    min-width: unset;
     justify-content: center;
   }
 
@@ -360,23 +420,5 @@
   .md-cast-grid {
     grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
     gap: 0.85rem;
-  }
-}
-/* SIMILAR MOVIES SECTION */
-.md-similar-section {
-  width: 100%;
-  max-width: 1300px;
-  margin: 0 auto;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-  position: relative;
-  z-index: 10;
-}
-
-/* Ensure padding adjusts smoothly on mobile just like the Hero/Body */
-@media (max-width: 768px) {
-  .md-similar-section {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
   }
 }

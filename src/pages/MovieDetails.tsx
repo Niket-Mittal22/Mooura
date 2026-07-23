@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { API_CONFIG } from '../lib/api';
 import MovieRow from '../components/MovieRow';
+import { useAuth } from '../context/AuthContext';
+import { db } from '../lib/firebase';
+import { doc, setDoc, deleteDoc, getDoc } from 'firebase/firestore';
 import './MovieDetails.css';
 
 interface MediaInfo {
@@ -23,6 +26,8 @@ interface MediaInfo {
 export const MovieDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user } = useAuth();
   
   // Determine if we are loading a movie or a tv show based on the URL
   const mediaType = location.pathname.includes('/tv/') ? 'tv' : 'movie';
@@ -32,7 +37,14 @@ export const MovieDetails: React.FC = () => {
   const [crew, setCrew] = useState<any[]>([]);
   const [trailerKey, setTrailerKey] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  
+  // Watchlist state
+  const [isInWatchlist, setIsInWatchlist] = useState(false);
+  const [isUpdatingWatchlist, setIsUpdatingWatchlist] = useState(false);
+  // INITIALIZE TO TRUE: Starts in loading state immediately on page mount
+  const [isCheckingWatchlist, setIsCheckingWatchlist] = useState(true);
 
+  // 1. Fetch Media details from TMDB
   useEffect(() => {
     // Instantly snap to the top when navigating to a new movie/series
     window.scrollTo(0, 0);
@@ -43,7 +55,7 @@ export const MovieDetails: React.FC = () => {
       setTrailerKey(null); // Reset trailer when switching pages
 
       try {
-        // Fetch details, credits, and videos concurrently using our dynamic endpoints
+        // Fetch details, credits, and videos concurrently using dynamic endpoints
         const [detailsRes, creditsRes, videosRes] = await Promise.all([
           fetch(API_CONFIG.endpoints.details(mediaType, id)),
           fetch(API_CONFIG.endpoints.credits(mediaType, id)),
@@ -90,6 +102,73 @@ export const MovieDetails: React.FC = () => {
     fetchMediaData();
   }, [id, mediaType]);
 
+  // 2. Check Firestore Watchlist status when user or media changes
+  useEffect(() => {
+    const checkWatchlistStatus = async () => {
+      // Always reset to checking state whenever ID or user changes
+      setIsCheckingWatchlist(true);
+
+      if (!user || !id) {
+        setIsInWatchlist(false);
+        setIsCheckingWatchlist(false);
+        return;
+      }
+
+      try {
+        const docRef = doc(db, 'users', user.uid, 'watchlist', id);
+        const docSnap = await getDoc(docRef);
+        setIsInWatchlist(docSnap.exists());
+      } catch (error) {
+        console.error("Error checking watchlist status:", error);
+      } finally {
+        setIsCheckingWatchlist(false);
+      }
+    };
+
+    checkWatchlistStatus();
+  }, [user, id]);
+
+  // 3. Handle Add / Remove from Watchlist
+  const handleWatchlistToggle = async () => {
+    // If not logged in, send user to Login page
+    if (!user) {
+      navigate('/login', { state: { from: location } });
+      return;
+    }
+
+    if (!id || !media || isUpdatingWatchlist) return;
+
+    setIsUpdatingWatchlist(true);
+    const docRef = doc(db, 'users', user.uid, 'watchlist', id);
+
+    try {
+      if (isInWatchlist) {
+        // Remove item from Firestore
+        await deleteDoc(docRef);
+        setIsInWatchlist(false);
+      } else {
+        // Add item to Firestore
+        await setDoc(docRef, {
+          id: Number(id),
+          title: media.title || media.name,
+          poster_path: media.poster_path,
+          backdrop_path: media.backdrop_path,
+          overview: media.overview,
+          vote_average: media.vote_average,
+          media_type: mediaType,
+          first_air_date: media.first_air_date || null,
+          release_date: media.release_date || null,
+          addedAt: new Date().toISOString()
+        });
+        setIsInWatchlist(true);
+      }
+    } catch (error) {
+      console.error("Error toggling watchlist:", error);
+    } finally {
+      setIsUpdatingWatchlist(false);
+    }
+  };
+
   if (isLoading || !media) {
     return <div className="md-loading-screen"><div className="modern-spinner"></div></div>;
   }
@@ -98,9 +177,6 @@ export const MovieDetails: React.FC = () => {
   const displayTitle = media.title || media.name;
   const releaseYear = (media.release_date || media.first_air_date || '').substring(0, 4);
   const backdropUrl = API_CONFIG.images.backdrop(media.backdrop_path, 'original');
-  
-  // TV Shows usually have an array of runtimes, we'll grab the first one if it exists
-  const runTimeVal = media.runtime || (media.episode_run_time && media.episode_run_time[0]);
   
   const formatRuntime = (minutes?: number) => {
     if (!minutes) return '';
@@ -156,12 +232,28 @@ export const MovieDetails: React.FC = () => {
               <span className="md-genres">{media.genres?.map(g => g.name).join(', ')}</span>
             </div>
 
-            <button className="md-watchlist-btn" onClick={() => console.log('Firebase Watchlist Logic Here')}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="12" y1="5" x2="12" y2="19"></line>
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-              </svg>
-              Add to Watchlist
+            <button 
+              className={`md-watchlist-btn ${isInWatchlist ? 'added' : ''} ${isCheckingWatchlist || isUpdatingWatchlist ? 'loading' : ''}`} 
+              onClick={handleWatchlistToggle}
+              disabled={isUpdatingWatchlist || isCheckingWatchlist}
+            >
+              <div className="btn-content-wrap">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  {isInWatchlist ? (
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  ) : (
+                    <>
+                      <line x1="12" y1="5" x2="12" y2="19"></line>
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </>
+                  )}
+                </svg>
+                {isInWatchlist ? 'Remove from Watchlist' : 'Add to Watchlist'}
+              </div>
+
+              {(isCheckingWatchlist || isUpdatingWatchlist) && (
+                <span className="btn-spinner"></span>
+              )}
             </button>
           </div>
         </div>
@@ -241,7 +333,7 @@ export const MovieDetails: React.FC = () => {
         <section className="md-similar-section">
           <MovieRow 
             title={mediaType === 'tv' ? 'Similar Series' : 'Similar Movies'} 
-            fetchUrl={API_CONFIG.endpoints.recommendations(mediaType, id)} 
+            fetchUrl={API_CONFIG.endpoints.similar(mediaType, id)} 
           />
         </section>
       )}

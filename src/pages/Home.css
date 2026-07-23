@@ -7,12 +7,18 @@
 .home-content-rows {
   position: relative;
   z-index: 10;
-  margin-top: -6rem; /* Pulls rows up into the Hero's fade out */
+  margin-top: -2rem; /* Pulls rows up into the Hero's fade out */
   padding-bottom: 4rem;
+}
+
+@media (max-width: 1024px) {
+  .home-content-rows {
+    margin-top: 0rem; /* Less overlap needed on mobile */
+  }
 }
 
 @media (max-width: 768px) {
   .home-content-rows {
-    margin-top: -2rem; /* Less overlap needed on mobile */
+    margin-top: -1rem; /* Less overlap needed on mobile */
   }
 }
